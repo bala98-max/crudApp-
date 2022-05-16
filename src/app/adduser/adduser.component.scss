@@ -1,0 +1,48 @@
+.username , .mobile, .date,.gender{
+    width: 45%;
+    padding: 5px 10px;
+}
+
+.email{
+    width:75%;
+    padding: 5px;
+}
+
+.example-radio-group {
+    display: flex;
+    flex-direction: column;
+    margin: 15px 0;
+    align-items: flex-start;
+  }
+  
+  .example-radio-button {
+    margin: 5px;
+  }
+
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+  
+  td {
+    padding-right: 8px;
+  }
+
+  section {
+    display: table;
+  }
+
+  .example-button-row {
+    display: table-cell;
+    width: 39vw;
+  }
+  
+  .example-button-row .mat-button-base {
+    margin: 8px 8px 8px 0;
+  }
+  
