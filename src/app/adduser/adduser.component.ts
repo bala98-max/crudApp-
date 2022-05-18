@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Validators , FormGroup, FormBuilder, FormControl } from '@angular/forms';
+import { ApiService } from '../services/api.service';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-adduser',
@@ -18,7 +20,8 @@ export class AdduserComponent implements OnInit {
 
   constructor(
     private formBuilder :FormBuilder,
-    // private 
+    private dialog : MatDialogRef<AdduserComponent>,
+    private $service :ApiService
   ) { }
 
   ngOnInit(): void {
@@ -29,18 +32,32 @@ export class AdduserComponent implements OnInit {
       phone:[null,[Validators.required,Validators.minLength(10),Validators.maxLength(13)]],
       date:[null,[Validators.required,Validators.min(2)]],
       gender:[null,[Validators.required]],
-      address:[null,[Validators.required,Validators.min(7)]],
+      address:[null,[Validators.required,Validators.min(7),Validators.max(25)]],
       city:[null,[Validators.required,Validators.min(4)]],
       state:[null,[Validators.required,Validators.min(4)]],
-      portelcode:[null,[Validators.required,Validators.min(5)]]
+      portelcode:[null,[Validators.required,Validators.min(6)]]
 
     })
   }
 
   onSubmit(){
     if(this.registerForm.valid){
-      alert('Form Submitted SuccessFully!!!');
-      console.table(this.registerForm.value)
+      this.$service.createuser(this.registerForm.value).subscribe({
+        next:((res)=>{
+          alert('user created successfully..!!!')
+          this.registerForm.reset();
+          this.dialog.close();
+
+        }),
+        error:((err)=>{
+          alert('facing an error')
+          console.log('err',err);
+            
+        }),complete:(()=>{
+
+        })
+        
+      })
     }else{
       
     }

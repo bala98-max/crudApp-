@@ -1,0 +1,40 @@
+{
+  "userlist": [
+    {
+      "firstName": "kunjan",
+      "lastName": "bali",
+      "email": "bala@gmail.com",
+      "phone": "8220701083",
+      "date": "2022-05-17T18:30:00.000Z",
+      "gender": "Transgender",
+      "address": "balikunjan,karunkadu post",
+      "city": "Nagercoil",
+      "state": "tamilnad",
+      "portelcode": "629810",
+      "id": 1
+    },
+    {
+      "firstName": "vignesh",
+      "lastName": "bala",
+      "email": "bala@gmail.com",
+      "phone": "9698457622",
+      "date": "2022-05-17T18:30:00.000Z",
+      "gender": "Male",
+      "address": " chithanthoppu , kandanvilai post",
+      "city": "Nagercoil",
+      "state": "tamilnad",
+      "portelcode": "629810",
+      "id": 2
+    }
+  ],
+  "comments": [
+    {
+      "id": 1,
+      "body": "some comment",
+      "postId": 1
+    }
+  ],
+  "profile": {
+    "name": "typicode"
+  }
+}
