@@ -4,6 +4,7 @@ import { Validators , FormGroup, FormBuilder, FormControl } from '@angular/forms
 import { ApiService } from '../services/api.service';
 import { MatDialogRef } from '@angular/material/dialog';
 
+
 @Component({
   selector: 'app-adduser',
   templateUrl: './adduser.component.html',
@@ -47,6 +48,7 @@ export class AdduserComponent implements OnInit {
           alert('user created successfully..!!!')
           this.registerForm.reset();
           this.dialog.close();
+          
 
         }),
         error:((err)=>{
@@ -54,7 +56,9 @@ export class AdduserComponent implements OnInit {
           console.log('err',err);
             
         }),complete:(()=>{
-
+          console.log('we are in completed state');
+          this.$service.tableupdate()
+          
         })
         
       })
