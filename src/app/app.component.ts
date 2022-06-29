@@ -17,13 +17,14 @@ import { Subscription } from 'rxjs';
 })
 export class AppComponent {
    userList:any;
-   displayedColumns: string[] = ['id', 'firstName','gender', 'email', 'phone','city','state'];
+   displayedColumns: string[] = ['id', 'firstName','gender', 'email', 'phone','city','state','action'];
    dataSource !: MatTableDataSource<any>;
    tableUpadteSubs !: Subscription
  
    @ViewChild(MatPaginator) paginator!: MatPaginator;
    @ViewChild(MatSort) sort!: MatSort;
     title = 'crudApp';
+   
   constructor(
     private dialog: MatDialog,
     private $apiService:ApiService
@@ -69,10 +70,24 @@ export class AppComponent {
   finduser(event:Event){
     console.log('event',event);
     const filterVal = (event.target as HTMLInputElement).value;
-    // console.log('filterval',filterVal,this.userList);
-    // this.dataSource.filter = filterVal.trim().toLowerCase
-    // console.log('fil',fil);
+  
+    console.log('filterVal',filterVal);
+
+    this.dataSource.filter = filterVal.trim().toLowerCase()
+    console.log('dataSourse',this.dataSource.filter);
     
     
+  }
+
+  // ngAfterViewInit() {
+  //   this.dataSource.paginator = this.paginator;
+  // }
+  edituser(data:any){
+    console.log('data------',data);
+    
+    this.dialog.open(AdduserComponent,{
+      width:'45%',
+      data:data
+    })
   }
 }

@@ -11,10 +11,18 @@ export class ApiService {
   private subject = new Subject<any>();
 
   createuser(data:any){
+    console.log('data',data);
+    
+  //  let check = this.http.get<any>('http://localhost:3000/userlist?firstName='+data.firstName);
+  //  console.log('check',check,typeof(check));
+  //  return check
     return this.http.post<any>('http://localhost:3000/userlist',data)
   }
 
-  
+  updateuser(data:any,id:number){
+    // console.log('id----',id);
+    return this.http.put('http://localhost:3000/userlist/'+id,data)
+  }
   getusers(){
     return this.http.get('http://localhost:3000/userlist')
   }

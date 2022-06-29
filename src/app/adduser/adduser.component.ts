@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 
 import { Validators , FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { ApiService } from '../services/api.service';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef,MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { inject } from '@angular/core/testing';
 
 
 @Component({
@@ -18,11 +19,13 @@ export class AdduserComponent implements OnInit {
 
   Gender !: string ;
   gTypes : string[] = ['Male','Female','Transgender'] 
+  actionbtn : string = "Save";
 
   constructor(
     private formBuilder :FormBuilder,
     private dialog : MatDialogRef<AdduserComponent>,
-    private $service :ApiService
+    private $service :ApiService,
+    @Inject(MAT_DIALOG_DATA) public editdata:any
   ) { }
 
   ngOnInit(): void {
@@ -37,19 +40,36 @@ export class AdduserComponent implements OnInit {
       city:[null,[Validators.required,Validators.min(4)]],
       state:[null,[Validators.required,Validators.min(4)]],
       portelcode:[null,[Validators.required,Validators.min(6)]]
-
     })
+
+    // console.log('this .editdata',this.editdata);
+    // this.registerForm.firstName  = this.editdata
+  
+    if(this.editdata){
+      this.actionbtn = "Update"
+      this.registerForm.controls['firstName'].setValue(this.editdata.firstName);
+      this.registerForm.controls['lastName'].setValue(this.editdata.lastName);
+      this.registerForm.controls['email'].setValue(this.editdata.email);
+      this.registerForm.controls['phone'].setValue(this.editdata.phone);
+      this.registerForm.controls['date'].setValue(this.editdata.date);
+      this.registerForm.controls['gender'].setValue(this.editdata.gender)
+      this.registerForm.controls['state'].setValue(this.editdata.state);
+      this.registerForm.controls['city'].setValue(this.editdata.city);
+      this.registerForm.controls['address'].setValue(this.editdata.address);
+      this.registerForm.controls['portelcode'].setValue(this.editdata.portelcode);
+
+    }
   }
+  
 
   onSubmit(){
-    if(this.registerForm.valid){
+    if(this.registerForm.valid && this.actionbtn != 'Update'){
       this.$service.createuser(this.registerForm.value).subscribe({
         next:((res)=>{
           alert('user created successfully..!!!')
           this.registerForm.reset();
           this.dialog.close();
           
-
         }),
         error:((err)=>{
           alert('facing an error')
@@ -63,6 +83,19 @@ export class AdduserComponent implements OnInit {
         
       })
     }else{
+      // console.log('editdata',this.registerForm.value.id);
+      this.$service.updateuser(this.registerForm.value,this.editdata.id).subscribe({
+        next:((res)=>{
+          console.log('res---------',res);
+          this.dialog.close();
+        }),error:((err)=>{
+          console.error('cannot update the user',err);
+          
+        }),complete:(()=>{
+          this.$service.tableupdate()
+        })
+      })
+      
       
     }
   }
