@@ -35,5 +35,10 @@ export class ApiService {
     return this.subject.asObservable();
   }
 
+  deleteUser(id:number):Observable<any>{
+    console.log('id-----',id);
+    
+    return this.http.delete('http://localhost:3000/userlist/'+id)
+  }
 
 }

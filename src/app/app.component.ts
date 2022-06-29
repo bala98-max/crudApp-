@@ -90,4 +90,18 @@ export class AppComponent {
       data:data
     })
   }
+  deluser(data:any){
+
+    this.$apiService.deleteUser(data.id).subscribe({
+      next:((res)=>{
+        console.log('user deleted');
+        
+      }),error:((err)=>{
+        console.log('cannot del a user');
+        
+      }),complete:(()=>{
+        this.$apiService.tableupdate()
+      })
+    })
+  }
 }

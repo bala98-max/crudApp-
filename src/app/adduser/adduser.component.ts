@@ -99,4 +99,8 @@ export class AdduserComponent implements OnInit {
       
     }
   }
+  closemdl(){
+    this.dialog.close();
+
+  }
 }
