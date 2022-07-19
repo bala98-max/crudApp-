@@ -37,15 +37,15 @@ export class AppComponent {
     private $apiService:ApiService
     ){
   this.tableUpadteSubs =  this.$apiService.getupdateTable().subscribe(()=>{
-    // this.getAllusers()
+    this.getAllusers()
   })
   }
   ngOnInit(){
-    // this.getAllusers();
-    // setTimeout(()=>{
-    //   console.log("after assign",this.userList);
+    this.getAllusers();
+    setTimeout(()=>{
+      console.log("after assign",this.userList);
 
-    // },500)
+    },500)
     
   }
   openDialog(){
@@ -59,18 +59,35 @@ export class AppComponent {
 
 
   getAllusers(event ?: PageEvent){
+    console.log('event',event);
+    if(event){
       this.$apiService.getusers().subscribe((res:any)=>{
-          if(res.error){
-              console.error('error-------------',res.error)
-          }else{
-            console.log('res------',res)
-            this.dataSource = new MatTableDataSource(res.splice(0,event?.pageSize));
-            this.pageIndex = res.pageIndex;
-            this.pageSize = res.pageSize;
-            this.length = res.length;
-          }
-         
-      })
+        if(res.error){
+            console.error('error-------------',res.error)
+        }else{
+          console.log('res------',res)
+          this.dataSource = new MatTableDataSource(res.splice(0,event?.pageSize));
+          this.pageIndex = res.pageIndex;
+          this.pageSize = res.pageSize;
+          this.length = res.length;
+        }
+       
+    })
+    }else{
+      this.$apiService.getusers().subscribe((res:any)=>{
+        if(res.error){
+            console.error('error-------------',res.error)
+        }else{
+          console.log('res------',res)
+          this.dataSource = new MatTableDataSource(res);
+          this.pageIndex = res.pageIndex;
+          this.pageSize = res.pageSize;
+          this.length = res.length;
+        }
+       
+    })
+    }
+
   }
 
   finduser(event:Event){
