@@ -5,7 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { ViewChild } from '@angular/core';
 import { AdduserComponent } from './adduser/adduser.component';
 import { ApiService } from './services/api.service';
-import {MatPaginator}from '@angular/material/paginator'
+import {MatPaginator, PageEvent}from '@angular/material/paginator'
 import { Subscription } from 'rxjs';
 
 
@@ -19,7 +19,14 @@ export class AppComponent {
    userList:any;
    displayedColumns: string[] = ['id', 'firstName','gender', 'email', 'phone','city','state','action'];
    dataSource !: MatTableDataSource<any>;
-   tableUpadteSubs !: Subscription
+   tableUpadteSubs !: Subscription;
+
+   // this is for list content in the table
+   pageEvent !:PageEvent ;
+   datasource !: any;
+   pageIndex !: number;
+   pageSize !: number;
+   length !: number;
  
    @ViewChild(MatPaginator) paginator!: MatPaginator;
    @ViewChild(MatSort) sort!: MatSort;
@@ -30,11 +37,11 @@ export class AppComponent {
     private $apiService:ApiService
     ){
   this.tableUpadteSubs =  this.$apiService.getupdateTable().subscribe(()=>{
-    this.getAllusers()
+    // this.getAllusers()
   })
   }
   ngOnInit(){
-    this.getAllusers();
+    // this.getAllusers();
     // setTimeout(()=>{
     //   console.log("after assign",this.userList);
 
@@ -51,20 +58,19 @@ export class AppComponent {
   
 
 
-  getAllusers(){
-    this.$apiService.getusers().subscribe({
-      next:((res:any)=>{
-        // // console.log('users table',res,typeof(res));
-        // this.userList = res;
-        this.dataSource = new MatTableDataSource(res)
-
-      }),
-      error:((err)=>{
-        alert('Error while fetching the data');
-        console.log('error form get methord-----',err);
-        
+  getAllusers(event ?: PageEvent){
+      this.$apiService.getusers().subscribe((res:any)=>{
+          if(res.error){
+              console.error('error-------------',res.error)
+          }else{
+            console.log('res------',res)
+            this.dataSource = new MatTableDataSource(res.splice(0,event?.pageSize));
+            this.pageIndex = res.pageIndex;
+            this.pageSize = res.pageSize;
+            this.length = res.length;
+          }
+         
       })
-    })
   }
 
   finduser(event:Event){
